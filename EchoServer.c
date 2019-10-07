@@ -53,7 +53,7 @@ int main(){
 				break;
 			//write(c_socket, buffer, n); //클라이언트에게 buffer의 내용을 전송함
 			if(strcmp(rcvBuffer,"안녕하세요")){
-			write(c_socket, buffer,strlen(buffer)+1);
+			write(c_socket, buffer,strlen(buffer)+1); //예제 5-1
 	}
 		}
 
