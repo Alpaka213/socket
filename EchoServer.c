@@ -48,11 +48,11 @@ int main(){
 		printf("클라이언트 접속 허용\n");
 		while(1){
 			n = read(c_socket, rcvBuffer, sizeof(rcvBuffer));
-			printf("rcvBuffer: %s\n", rcvBuffer);
 			if(strncasecmp(rcvBuffer, "quit", 4) == 0 || strncasecmp(rcvBuffer, "kill server", 11) == 0)
 				break;
 			else if(strncasecmp(rcvBuffer,"안녕하세요",11)==0){
 				write(c_socket,buffer,strlen(buffer)+1); //예제 5-1 안녕하세요 값 을 내보내줌
+				printf("%s \n",buffer); //서버 화면에 출력
 			}
 			else
 				write(c_socket,rcvBuffer,n); //아니면 받은 값 되돌려줌
