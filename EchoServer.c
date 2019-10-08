@@ -51,10 +51,11 @@ int main(){
 			printf("rcvBuffer: %s\n", rcvBuffer);
 			if(strncasecmp(rcvBuffer, "quit", 4) == 0 || strncasecmp(rcvBuffer, "kill server", 11) == 0)
 				break;
-			//write(c_socket, buffer, n); //클라이언트에게 buffer의 내용을 전송함
-			if(strcmp(rcvBuffer,"안녕하세요")){
-			write(c_socket, buffer,strlen(buffer)+1); //예제 5-1
-	}
+			else if(strncasecmp(rcvBuffer,"안녕하세요",11)==0){
+				write(c_socket,buffer,strlen(buffer)+1); //예제 5-1 안녕하세요 값 을 내보내줌
+			}
+			else
+				write(c_socket,rcvBuffer,n); //아니면 받은 값 되돌려줌
 		}
 
 		close(c_socket);
