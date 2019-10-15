@@ -5,9 +5,10 @@
 
 #define PORT 10000
 
-char buffer[100] = "안녕하세요 반가워요\n";
+char buffer[100] = "Hi, I'm server.\n";
+// sizeof(buffer) => 100 (배열의 크기)
+// strlen(buffer) => 15 (buffer에 저장된 문자열의 길이)
 char rcvBuffer[100];
-
 int main(){
 	int c_socket, s_socket;
 	struct sockaddr_in s_addr, c_addr;
@@ -48,14 +49,61 @@ int main(){
 		printf("클라이언트 접속 허용\n");
 		while(1){
 			n = read(c_socket, rcvBuffer, sizeof(rcvBuffer));
+			printf("rcvBuffer: %s\n", rcvBuffer);
+			rcvBuffer[n-1] = '\0'; //개행 문자 삭제
+
 			if(strncasecmp(rcvBuffer, "quit", 4) == 0 || strncasecmp(rcvBuffer, "kill server", 11) == 0)
 				break;
-			else if(strncasecmp(rcvBuffer,"안녕하세요",11)==0){
-				write(c_socket,buffer,strlen(buffer)+1); //예제 5-1 안녕하세요 값 을 내보내줌
-				printf("%s \n",buffer); //서버 화면에 출력
-			}
-			else
-				write(c_socket,rcvBuffer,n); //아니면 받은 값 되돌려줌
+			else if (!strncasecmp(rcvBuffer, "안녕하세요", strlen("안녕하세요")))
+				strcpy(buffer, "안녕하세요. 만나서 반가워요.");
+			else if (!strncasecmp(rcvBuffer, "이름이 머야?", strlen("이름이 머야?")))
+				strcpy(buffer, "내 이름은 박홍규야.");
+			else if (!strncasecmp(rcvBuffer, "몇 살이야?", strlen("몇 살이야?")))
+				strcpy(buffer, "나는 32살이야");
+			else if (!strncasecmp(rcvBuffer, "strlen ", strlen("strlen ")))
+				//문자열의 길이는 XX입니다.
+				sprintf(buffer, "문자열의 길이는 %d입니다.", strlen(rcvBuffer)-7);
+			else if(!strncasecmp(rcvBuffer,"readfile ",strlen("readfile "))){
+					FILE *fp;
+					char c[100];
+					char *res;
+		
+					fp = fopen("list.txt","r");
+					if(fp==NULL)
+					{printf("파일이 없습니다.");
+					 return 1;}
+					
+					while (1){
+						res=fgets(c,sizeof(c),fp);
+						if(res==NULL) break;
+						c[strlen(c)-1]='\0';
+						strcmp(buffer,res);
+					}
+					fclose(fp);
+				}
+			else if (!strncasecmp(rcvBuffer, "strcmp ", strlen("strcmp "))){
+				char *token;
+				char *str[3];
+				int idx = 0;
+				token = strtok(rcvBuffer, " ");
+				while(token != NULL){
+					str[idx] = token;
+					printf("str[%d] = %s\n", idx, str[idx]);
+					idx++;
+					token = strtok(NULL, " ");
+				}
+				if(idx < 3)
+					strcpy(buffer, "문자열 비교를 위해서는 두 문자열이 필요합니다.");
+				else if(!strcmp(str[1], str[2])) //같은 문자열이면
+					sprintf(buffer, "%s와 %s는 같은 문자열입니다.",  str[1], str[2]);
+				
+				else
+					sprintf(buffer, "%s와 %s는 다른 문자열입니다.",  str[1], str[2]);
+				}
+				else
+				strcpy(buffer, "무슨 말인지 모르겠습니다.");
+				
+			write(c_socket, buffer, strlen(buffer)); //클라이언트에게 buffer의 내용을 전송함
 		}
 
 		close(c_socket);
