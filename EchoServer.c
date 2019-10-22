@@ -68,7 +68,7 @@ int main(){
 					char c[100];
 					char *res;
 		
-					fp = fopen("list.txt","r");
+					fp = fopen("test.txt","r");
 					if(fp==NULL)
 					{printf("파일이 없습니다.");
 					 return 1;}
@@ -77,9 +77,10 @@ int main(){
 						res=fgets(c,sizeof(c),fp);
 						if(res==NULL) break;
 						c[strlen(c)-1]='\0';
-						strcmp(buffer,res);
+						write(c_socket, res, strlen(res)); 
 					}
 					fclose(fp);
+					break;
 				}
 			else if (!strncasecmp(rcvBuffer, "strcmp ", strlen("strcmp "))){
 				char *token;
