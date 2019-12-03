@@ -73,8 +73,7 @@ main(int argc, char *argv[ ])
 	}
 }
 
-void *
-do_chat(void *arg)
+void *do_chat(void *arg)
 {
 	int c_socket = *((int*) arg);
 	char	chatData[CHATDATA];
@@ -97,8 +96,7 @@ do_chat(void *arg)
 	}
 }
 
-int
-pushClient(int c_socket) {
+int pushClient(int c_socket) {
 	int	i;
 
 	for(i = 0; i < MAX_CLIENT; i++) {
@@ -115,8 +113,7 @@ pushClient(int c_socket) {
 		return -1;
 	}		
 		
-int
-popClient(int s)
+int popClient(int s)
 {			
 	int	i;	 
 				
@@ -133,4 +130,4 @@ popClient(int s)
 		}
 		
 	return 0;
-	}
+}
